@@ -4,41 +4,48 @@
 #include "WriteSet.h"
 #include "Node.h"
 #include "GVC.h"
+#include "Index.h"
+
 
 class SkipListTransaction
 {
 public:
     SkipListTransaction() {}
 
-    // TODO: Should this free all locks etc.?
     virtual ~SkipListTransaction() {}
 
     unsigned int readVersion;
+    unsigned int writeVersion;
     std::vector<Node *> readSet;
     WriteSet writeSet;
+    std::vector<IndexOperation> indexTodo;
 };
 
 class SkipList
 {
 public:
-    SkipList() : head(NULL) {}
+    SkipList() : index(gvc.read()) {}
 
     virtual ~SkipList() {}
 
     void TXBegin(SkipListTransaction & transaction);
 
-    bool contains(ItemType & k, SkipListTransaction & transaction);
+    bool contains(const ItemType & k, SkipListTransaction & transaction);
 
-    bool insert(ItemType & k, SkipListTransaction & transaction);
+    bool insert(const ItemType & k, SkipListTransaction & transaction);
 
-    bool remove(ItemType & k, SkipListTransaction & transaction);
+    bool remove(const ItemType & k, SkipListTransaction & transaction);
+
+    Node * getValidatedValue(SkipListTransaction & transaction, Node * node,
+                             bool * outDeleted = NULL);
+
+    bool validateReadSet(SkipListTransaction & transaction);
 
     void TXCommit(SkipListTransaction & transaction);
 
-private:
-    void traverseTo(ItemType & k, SkipListTransaction & transaction,
+    void traverseTo(const ItemType & k, SkipListTransaction & transaction,
                     Node *& pred, Node *& succ);
 
-    Node * head;
     GVC gvc;
+    Index index;
 };

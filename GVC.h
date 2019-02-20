@@ -14,9 +14,9 @@ public:
         return version.load();
     }
 
-    unsigned int fetchAndAdd()
+    unsigned int addAndFetch()
     {
-        return std::atomic_fetch_add(&version, 1);
+        return std::atomic_fetch_add(&version, 1) + 1;
     }
 
 private:

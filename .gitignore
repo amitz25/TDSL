@@ -4,3 +4,16 @@
 *.filters
 
 x64/Debug/
+
+*.db
+
+*.opendb
+
+*.ipch
+
+*.db-shm
+
+*.db-wal
+
+windows/test/x64/
+windows/x64

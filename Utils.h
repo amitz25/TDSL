@@ -6,3 +6,7 @@
 #include <mutex>
 
 typedef int ItemType;
+
+class AbortTransactionException : public std::exception
+{
+};
