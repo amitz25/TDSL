@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{ACC2510E-F5DD-4D96-92F0-B05DBECEC917}</ProjectGuid>
-    <RootNamespace>test</RootNamespace>
+    <ProjectGuid>{7BAFA400-69EF-4E4A-835D-BF0E20D471F7}</ProjectGuid>
+    <RootNamespace>experiments</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,16 +70,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)..\externals\googletest\googletest\include;$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\externals\googletest\googletest\include;$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)..\externals\googletest\googletest\include;$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)..\externals\googletest\googletest\include;$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)..\Index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -89,9 +89,6 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>$(SolutionDir)..\externals\googletest\googletest\msvc\2017\$(Platform)\$(Configuration)\gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -101,9 +98,6 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>$(SolutionDir)..\externals\googletest\googletest\msvc\2017\$(Platform)\$(Configuration)\gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -118,7 +112,6 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(SolutionDir)..\externals\googletest\googletest\msvc\2017\$(Platform)\$(Configuration)\gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,16 +127,12 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(SolutionDir)..\externals\googletest\googletest\msvc\2017\$(Platform)\$(Configuration)\gtest.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test.cpp" />
+    <ClCompile Include="..\..\experiments.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Index\Index.vcxproj">
-      <Project>{ec4c4442-df94-4da9-a055-072457081fac}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\TDSL.vcxproj">
       <Project>{db5567f2-b30b-45de-9c4c-8eba2e99a50a}</Project>
     </ProjectReference>

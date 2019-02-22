@@ -5,7 +5,7 @@
 class SafeLock
 {
 public:
-    SafeLock(std::recursive_mutex & m) : lock(m)
+    SafeLock(Mutex & m) : lock(m)
     {
         lock.lock();
     }
@@ -16,7 +16,7 @@ public:
     }
 
 private:
-    std::recursive_mutex & lock;
+    Mutex & lock;
 };
 
 class SafeLockList
@@ -32,11 +32,11 @@ public:
         }
     }
 
-    void add(std::recursive_mutex & lock)
+    void add(Mutex & lock)
     {
         locks.push_back(&lock);
     }
 
 private:
-    std::vector<std::recursive_mutex *> locks;
+    std::vector<Mutex *> locks;
 };

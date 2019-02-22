@@ -17,3 +17,15 @@ x64/Debug/
 
 windows/test/x64/
 windows/x64
+
+windows/experiments/x64/Debug/experiments\.tlog/
+
+windows/experiments/x64/Debug/
+
+windows/experiments/x64/Release/experiments\.tlog/
+
+*.vspx
+
+windows/Index/x64/Debug/
+
+windows/Index/x64/Release/Index\.tlog/

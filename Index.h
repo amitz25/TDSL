@@ -2,6 +2,7 @@
 
 #include "Node.h"
 #include "Utils.h"
+#include "skiplist.h"
 
 enum OperationType
 {
@@ -21,7 +22,7 @@ public:
 class Index
 {
 public:
-    Index(unsigned int version) : root(MIN_VAL, version), head(&root) {}
+    Index(unsigned int version);
 
     void update(std::vector<IndexOperation> & ops);
 
@@ -40,7 +41,6 @@ public:
     ItemType sum();
 
 private:
-    std::recursive_mutex lock;
-    Node root;
-    Node * head;
+    Node head;
+    skiplist_raw sl;
 };

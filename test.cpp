@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "Index.h"
-#include "SkipList.h"
+#include "TSkipList.h"
 
 class TDSLTest : public ::testing::Test
 {
@@ -18,38 +18,6 @@ public:
     {
     }
 };
-
-TEST_F(TDSLTest, IndexBasic)
-{
-    Index index(0);
-    ASSERT_TRUE(index.insert(5));
-    ASSERT_TRUE(index.insert(10));
-    ASSERT_TRUE(index.insert(7));
-
-    ASSERT_TRUE(index.contains(5));
-    ASSERT_TRUE(index.contains(7));
-    ASSERT_TRUE(index.contains(10));
-
-    ASSERT_EQ(index.sum(), 22);
-
-    ASSERT_FALSE(index.remove(3));
-    ASSERT_FALSE(index.insert(5));
-
-    // Regular removal
-    ASSERT_TRUE(index.remove(7));
-    ASSERT_EQ(index.sum(), 15);
-    ASSERT_FALSE(index.contains(7));
-
-    // Head removal
-    ASSERT_TRUE(index.remove(5));
-    ASSERT_EQ(index.sum(), 10);
-    ASSERT_FALSE(index.contains(5));
-
-    // Head insertion
-    ASSERT_TRUE(index.insert(3));
-    ASSERT_TRUE(index.contains(3));
-    ASSERT_EQ(index.sum(), 13);
-}
 
 void initSkipList(SkipList & sl)
 {

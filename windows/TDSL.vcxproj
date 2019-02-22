@@ -21,16 +21,22 @@
   <ItemGroup>
     <ClInclude Include="..\GVC.h" />
     <ClInclude Include="..\Index.h" />
+    <ClInclude Include="..\Mutex.h" />
     <ClInclude Include="..\Node.h" />
     <ClInclude Include="..\SafeLock.h" />
-    <ClInclude Include="..\SkipList.h" />
+    <ClInclude Include="..\TSkipList.h" />
     <ClInclude Include="..\Utils.h" />
     <ClInclude Include="..\WriteSet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Index.cpp" />
-    <ClCompile Include="..\SkipList.cpp" />
+    <ClCompile Include="..\TSkipList.cpp" />
     <ClCompile Include="..\WriteSet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Index\Index.vcxproj">
+      <Project>{ec4c4442-df94-4da9-a055-072457081fac}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -86,15 +92,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\index;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

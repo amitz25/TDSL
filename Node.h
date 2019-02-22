@@ -1,14 +1,17 @@
 #pragma once
 
 #include "Utils.h"
-
-constexpr ItemType MIN_VAL = -65535;
+#include "Mutex.h"
+#include "skiplist.h"
 
 class Node
 {
 public:
     Node(const ItemType & k, unsigned int version) :
-        key(k), next(NULL), deleted(false), version(version) {}
+        key(k), deleted(false), version(version)
+    {
+        skiplist_init_node(&snode);
+    }
 
     virtual ~Node()
     {
@@ -16,17 +19,13 @@ public:
 
     bool isLocked()
     {
-        if (lock.try_lock()) {
-            lock.unlock();
-            return false;
-        } else {
-            return true;
-        }
+        return lock.isLocked();
     }
 
+    skiplist_node snode;
     ItemType key;
     Node * next;
     bool deleted;
-    std::recursive_mutex lock;
+    Mutex lock;
     unsigned int version;
 };

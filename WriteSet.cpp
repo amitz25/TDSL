@@ -39,7 +39,7 @@ bool WriteSet::tryLock(SafeLockList & locks)
 {
     for (auto & it : items) {
         Node * node = it.first;
-        if (node->lock.try_lock()) {
+        if (node->lock.tryLock()) {
             locks.add(node->lock);
         } else {
             return false;

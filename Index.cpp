@@ -1,9 +1,32 @@
 #include "Index.h"
 #include "SafeLock.h"
 
+constexpr ItemType MIN_VAL = -2147483647;
+
+static int NodeCmp(skiplist_node * a, skiplist_node * b, void *)
+{
+    Node * aa, *bb;
+    aa = _get_entry(a, Node, snode);
+    bb = _get_entry(b, Node, snode);
+
+    if (aa->key < bb->key) {
+        return -1;
+    }
+    if (aa->key > bb->key) {
+        return 1;
+    }
+    return 0;
+}
+
+
+Index::Index(unsigned int version) : head(MIN_VAL, version)
+{
+    skiplist_init(&sl, NodeCmp);
+    skiplist_insert(&sl, &head.snode);
+}
+
 void Index::update(std::vector<IndexOperation> & ops)
 {
-    SafeLock sl(lock);
     for (auto & op : ops) {
         if (op.op == OperationType::REMOVE) {
             if (!remove(op.node)) {
@@ -19,26 +42,25 @@ void Index::update(std::vector<IndexOperation> & ops)
 
 bool Index::insert(Node * n)
 {
-    // TODO: This function does nothing since we've already updated the nodes. When we use
-    //       a real skiplist for efficiency we should change this function
+    skiplist_insert(&sl, &n->snode);
     return true;
 }
 
 bool Index::remove(Node * n)
 {
-    // TODO: This function does nothing since we've already updated the nodes. When we use
-    //       a real skiplist for efficiency we should change this function
+    skiplist_erase_node(&sl, &n->snode);
     return true;
 }
 
 Node * Index::getPrev(const ItemType & k)
 {
-    Node * n = head;
-    while (n->next != NULL && n->next->key < k) {
-        n = n->next;
+    Node query(k, 0);
+    skiplist_node * cursor = skiplist_find_smaller_or_equal(&sl, &query.snode);
+    if (!cursor) {
+        throw std::runtime_error("WTF");
     }
 
-    return n;
+    return _get_entry(cursor, Node, snode);
 }
 
 
@@ -80,7 +102,7 @@ bool Index::contains(const ItemType & k)
 ItemType Index::sum()
 {
     ItemType sum = 0;
-    Node * n = head->next;
+    Node * n = head.next;
     while (n != NULL) {
         sum += n->key;
         n = n->next;
