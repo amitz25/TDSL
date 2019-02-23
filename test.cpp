@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "Index.h"
-#include "TSkipList.h"
+#include "tskiplist/Index.h"
+#include "tskiplist/TSkipList.h"
 
 class TDSLTest : public ::testing::Test
 {

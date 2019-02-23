@@ -2,8 +2,8 @@
 #include <time.h>
 #include <random>
 
-#include "Utils.h"
-#include "TSkipList.h"
+#include "tskiplist/Utils.h"
+#include "tskiplist/TSkipList.h"
 
 using namespace std;
 
