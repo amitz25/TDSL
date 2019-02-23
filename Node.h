@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 #include "Mutex.h"
-#include "skiplist.h"
+#include "skiplist/skiplist.h"
 
 class Node
 {
@@ -13,9 +13,7 @@ public:
         skiplist_init_node(&snode);
     }
 
-    virtual ~Node()
-    {
-    }
+    virtual ~Node() = default;
 
     bool isLocked()
     {

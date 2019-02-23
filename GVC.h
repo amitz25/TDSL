@@ -7,7 +7,7 @@ class GVC
 public:
     GVC() : version(0) {}
 
-    virtual ~GVC() {}
+    virtual ~GVC() = default;
 
     unsigned int read() const
     {
@@ -16,7 +16,7 @@ public:
 
     unsigned int addAndFetch()
     {
-        return std::atomic_fetch_add(&version, 1) + 1;
+        return std::atomic_fetch_add<unsigned int>(&version, 1) + 1;
     }
 
 private:

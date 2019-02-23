@@ -12,11 +12,7 @@ bool SkipList::contains(const ItemType & k, SkipListTransaction & transaction)
     Node * pred = NULL, *succ = NULL;
     traverseTo(k, transaction, pred, succ);
 
-    if (succ != NULL && succ->key == k) {
-        return true;
-    } else {
-        return false;
-    }
+    return (succ != NULL && succ->key == k);
 }
 
 bool SkipList::insert(const ItemType & k, SkipListTransaction & transaction)
