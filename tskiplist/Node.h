@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 #include "Mutex.h"
-#include "../skiplist/skiplist.h"
+#include "skiplist/skiplist.h"
 
 class Node
 {
