@@ -2,7 +2,7 @@
 
 #include "Node.h"
 #include "Utils.h"
-#include "skiplist.h"
+#include "skiplist/skiplist.h"
 
 enum OperationType
 {

@@ -29,3 +29,7 @@ windows/experiments/x64/Release/experiments\.tlog/
 windows/Index/x64/Debug/
 
 windows/Index/x64/Release/Index\.tlog/
+
+.idea/
+
+cmake-build-debug/
