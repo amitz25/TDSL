@@ -2,9 +2,9 @@
 #define ALLOCATOR_H
 
 #include <cstdint>
-#include <stdlib.h>
+#include <malloc.h>
 #include <atomic>
-#include <assert.h>
+#include "assert.h"
 
 #include <iostream>
 
