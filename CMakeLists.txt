@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 2.8)
 project(TDSL)
 set(CMAKE_CXX_STANDARD 11)
+add_definitions(-std=c++11) 
 
 set(SOURCE_FILES tskiplist/Index.cpp tskiplist/WriteSet.cpp tskiplist/TSkipList.cpp tskiplist/skiplist/skiplist.cc)
-set(BOOST_ROOT "/usr/local/Cellar/boost/1.68.0_1")
 
-find_package(Boost 1.68 COMPONENTS system filesystem REQUIRED)
+find_package(Boost 1.50 COMPONENTS system filesystem REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
