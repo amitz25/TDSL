@@ -7,7 +7,8 @@
 enum OperationType
 {
     REMOVE,
-    INSERT
+    INSERT,
+    CONTAINS
 };
 
 class IndexOperation
