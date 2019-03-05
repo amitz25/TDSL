@@ -63,45 +63,9 @@ Node * Index::getPrev(const ItemType & k)
     return _get_entry(cursor, Node, snode);
 }
 
-
-bool Index::remove(const ItemType & k)
+long Index::sum()
 {
-    Node * n = getPrev(k);
-
-    if (n->next == NULL || n->next->key != k) {
-        return false;
-    }
-
-    Node * todelete = n->next;
-    n->next = todelete->next;
-    todelete->deleted = true;
-    return true;
-}
-
-bool Index::insert(const ItemType & k)
-{
-    Node * n = getPrev(k);
-
-    if (n->next != NULL && n->next->key == k) {
-        return false;
-    }
-
-    Node * newNode = new Node(k, 0);
-
-    newNode->next = n->next;
-    n->next = newNode;
-    return true;
-}
-
-bool Index::contains(const ItemType & k)
-{
-    Node * n = getPrev(k);
-    return n->next != NULL && n->next->key == k;
-}
-
-ItemType Index::sum()
-{
-    ItemType sum = 0;
+    long sum = 0;
     Node * n = head.next;
     while (n != NULL) {
         sum += n->key;
@@ -111,8 +75,14 @@ ItemType Index::sum()
     return sum;
 }
 
-Node * Index::getNode(const ItemType & k)
+long Index::size()
 {
-    Node * n = getPrev(k);
-    return n->next;
+    long size = 0;
+    Node * n = head.next;
+    while (n != NULL) {
+        size++;
+        n = n->next;
+    }
+
+    return size;
 }

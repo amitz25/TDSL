@@ -2,32 +2,28 @@
 
 #include "Utils.h"
 
-// TODO: isLocked() is inefficient
 class Mutex
 {
 public:
-    Mutex() {}
+    Mutex() : locked(false) {}
 
     virtual ~Mutex() {}
 
     void lock()
     {
+        locked = true;
         mutex.lock();
     }
 
     void unlock()
     {
         mutex.unlock();
+        locked = false;
     }
 
     bool isLocked()
     {
-        if (mutex.try_lock()) {
-            mutex.unlock();
-            return false;
-        } else {
-            return true;
-        }
+        return locked;
     }
 
     bool tryLock()
@@ -37,4 +33,5 @@ public:
 
 private:
     std::recursive_mutex mutex;
+    bool locked;
 };

@@ -31,15 +31,11 @@ public:
 
     bool remove(Node * node);
 
-
     Node * getPrev(const ItemType & k);
 
     // These methods are purely for test-purposes and are not meant to be used by TDSs.
-    bool insert(const ItemType & k);
-    bool remove(const ItemType & k);
-    bool contains(const ItemType & k);
-    Node * getNode(const ItemType & k);
-    ItemType sum();
+    long sum();
+    long size();
 
 private:
     Node head;

@@ -22,7 +22,7 @@ unsigned int constexpr MAX_KEY_VAL = 1000000;
 unsigned int constexpr TIMEOUT = 10;
 
 
-void warmUp(SkipList & sl, default_random_engine & generator)
+void warmUp(SkipList & sl, minstd_rand & generator)
 {
     uniform_int_distribution<int> distribution(MIN_KEY_VAL, MAX_KEY_VAL);
 
@@ -37,6 +37,7 @@ void warmUp(SkipList & sl, default_random_engine & generator)
     }
 
     printf("\nList sum: %d\n", sl.index.sum());
+    cout << "List size: " << sl.index.size() << endl;
 }
 
 void chooseOps(WorkloadType wtype, uint32_t numOps,
@@ -45,16 +46,16 @@ void chooseOps(WorkloadType wtype, uint32_t numOps,
     switch (wtype) {
     case READ_ONLY:
         for (uint32_t i = 0; i < numOps; i++) {
-            outOps.push_back(OperationType::CONTAINS);
+            outOps.at(i) = OperationType::CONTAINS;
         }
         break;
     case UPDATE_ONLY: {
         const uint32_t halfPoint = (uint32_t)(numOps / 2.0);
         for (uint32_t i = 0; i < halfPoint; i++) {
-            outOps.push_back(OperationType::INSERT);
+            outOps.at(i) = OperationType::INSERT;
         }
         for (uint32_t i = halfPoint; i < numOps; i++) {
-            outOps.push_back(OperationType::REMOVE);
+            outOps.at(i) = OperationType::REMOVE;
         }
         break;
     }
@@ -62,20 +63,34 @@ void chooseOps(WorkloadType wtype, uint32_t numOps,
         const uint32_t halfPoint = (uint32_t)(numOps / 2.0);
         const uint32_t threeQuarters = (uint32_t)(numOps * 3.0 / 4.0);
         for (uint32_t i = 0; i < halfPoint; i++) {
-            outOps.push_back(OperationType::CONTAINS);
+            outOps.at(i) = OperationType::CONTAINS;
         }
         for (uint32_t i = halfPoint; i < threeQuarters; i++) {
-            outOps.push_back(OperationType::REMOVE);
+            outOps.at(i) = OperationType::REMOVE;
         }
         for (uint32_t i = threeQuarters; i < numOps; i++) {
-            outOps.push_back(OperationType::INSERT);
+            outOps.at(i) = OperationType::INSERT;
         }
         break;
     }
     }
 }
 
-void worker(SkipList * sl, default_random_engine * generator,
+void performOp(SkipList * sl, OperationType & opType,
+               SkipListTransaction & trans,
+               int key)
+{
+    if (opType == OperationType::CONTAINS) {
+        sl->contains(key, trans);
+    } else if (opType == OperationType::INSERT) {
+        if (sl->insert(key, trans)) {
+        }
+    } else if (opType == OperationType::REMOVE) {
+        sl->remove(key, trans);
+    }
+}
+
+void worker(SkipList * sl, minstd_rand * generator,
             atomic<uint32_t> * opsCounter, atomic<uint32_t> * abortCounter,
             WorkloadType wtype, time_t end)
 {
@@ -85,14 +100,15 @@ void worker(SkipList * sl, default_random_engine * generator,
     while (time(NULL) < end) {
         int numOps = transaction_distribution(*generator);
 
-        vector<OperationType> ops;
+        vector<OperationType> ops(numOps);
         chooseOps(wtype, numOps, ops);
 
         SkipListTransaction trans;
         sl->TXBegin(trans);
         try {
             for (uint32_t i = 0; i < numOps; i++) {
-                sl->contains(key_distribution(*generator), trans);
+                int key = key_distribution(*generator);
+                performOp(sl, ops[i], trans, key);
             }
             sl->TXCommit(trans);
             atomic_fetch_add<uint32_t>(opsCounter, numOps);
@@ -116,7 +132,7 @@ int main(int argc, char * argv[])
     WorkloadType wtype = (WorkloadType)(atoi(argv[1]));
 
     SkipList sl;
-    default_random_engine generator;
+    minstd_rand generator;
     warmUp(sl, generator);
 
     uint32_t numThreads = atoi(argv[2]);
@@ -138,5 +154,7 @@ int main(int argc, char * argv[])
 
     cout << "Num ops: " << opsCounter << endl;
     cout << "Num aborts: " << abortCounter << endl;
+    cout << "List sum: " << sl.index.sum() << endl;
+    cout << "List size: " << sl.index.size() << endl;
     return 0;
 }
