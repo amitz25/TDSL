@@ -22,13 +22,14 @@ unsigned int constexpr MAX_KEY_VAL = 1000000;
 unsigned int constexpr TIMEOUT = 10;
 
 
-void warmUp(SkipList & sl, minstd_rand & generator)
+void warmUp(SkipList & sl)
 {
+    minstd_rand generator;
     uniform_int_distribution<int> distribution(MIN_KEY_VAL, MAX_KEY_VAL);
 
+    cout << "Warming up..." << endl;
     for (auto i = 0; i < WARM_UP_NUM_KEYS; i++) {
         int percent = (int)((i / float(WARM_UP_NUM_KEYS)) * 100);
-        printf("\rWarming up... %d%%", percent);
 
         SkipListTransaction trans;
         sl.TXBegin(trans);
@@ -36,8 +37,7 @@ void warmUp(SkipList & sl, minstd_rand & generator)
         sl.TXCommit(trans);
     }
 
-    printf("\nList sum: %d\n", sl.index.sum());
-    cout << "List size: " << sl.index.size() << endl;
+    cout << "Finished" << endl;
 }
 
 void chooseOps(WorkloadType wtype, uint32_t numOps,
@@ -90,15 +90,16 @@ void performOp(SkipList * sl, OperationType & opType,
     }
 }
 
-void worker(SkipList * sl, minstd_rand * generator,
-            atomic<uint32_t> * opsCounter, atomic<uint32_t> * abortCounter,
+void worker(SkipList * sl, atomic<uint32_t> * opsCounter,
+            atomic<uint32_t> * abortCounter,
             WorkloadType wtype, time_t end)
 {
+    minstd_rand generator;
     uniform_int_distribution<int> key_distribution(MIN_KEY_VAL, MAX_KEY_VAL);
     uniform_int_distribution<uint32_t> transaction_distribution(1, 7);
 
     while (time(NULL) < end) {
-        int numOps = transaction_distribution(*generator);
+        int numOps = transaction_distribution(generator);
 
         vector<OperationType> ops(numOps);
         chooseOps(wtype, numOps, ops);
@@ -107,7 +108,7 @@ void worker(SkipList * sl, minstd_rand * generator,
         sl->TXBegin(trans);
         try {
             for (uint32_t i = 0; i < numOps; i++) {
-                int key = key_distribution(*generator);
+                int key = key_distribution(generator);
                 performOp(sl, ops[i], trans, key);
             }
             sl->TXCommit(trans);
@@ -132,8 +133,7 @@ int main(int argc, char * argv[])
     WorkloadType wtype = (WorkloadType)(atoi(argv[1]));
 
     SkipList sl;
-    minstd_rand generator;
-    warmUp(sl, generator);
+    warmUp(sl);
 
     uint32_t numThreads = atoi(argv[2]);
     vector<thread> threads;
@@ -144,7 +144,7 @@ int main(int argc, char * argv[])
     atomic<uint32_t> abortCounter(0);
 
     for (uint32_t i = 0; i < numThreads; i++) {
-        threads.push_back(thread(worker, &sl, &generator, &opsCounter, &abortCounter,
+        threads.push_back(thread(worker, &sl, &opsCounter, &abortCounter,
                                  wtype, end));
     }
 
@@ -154,7 +154,5 @@ int main(int argc, char * argv[])
 
     cout << "Num ops: " << opsCounter << endl;
     cout << "Num aborts: " << abortCounter << endl;
-    cout << "List sum: " << sl.index.sum() << endl;
-    cout << "List size: " << sl.index.size() << endl;
     return 0;
 }
