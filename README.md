@@ -12,7 +12,7 @@ Workload types:
 1 = MIXED
 2 = UPDATE_ONLY
 
-Example of running the comparisons to output a comparison graph:
+Example of running the experiments and drawing a comparison graph:
 1. python run_experiments_cpp.py tdsl-test 1 results_cpp
 2. cd ../transactionLib; python run_experiments_java.py 1 results_java
 3. python plot_comparison.py results_cpp results_java
