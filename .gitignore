@@ -33,3 +33,4 @@ windows/Index/x64/Release/Index\.tlog/
 .idea/
 
 cmake-build-debug/
+build/

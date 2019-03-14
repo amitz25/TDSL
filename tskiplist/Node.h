@@ -8,7 +8,7 @@ class Node
 {
 public:
     Node(const ItemType & k, unsigned int version) :
-        key(k), deleted(false), version(version)
+        key(k), deleted(false), version(version), next(NULL)
     {
         skiplist_init_node(&snode);
     }
