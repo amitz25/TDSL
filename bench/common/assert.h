@@ -7,7 +7,7 @@
 #ifndef _COMMON_UTILITIES_ASSERT_INCLUDED_
 #define _COMMON_UTILITIES_ASSERT_INCLUDED_
 
-#include "config.h"
+// #include "config.h"
 
 //------------------------------------------------------------------------
 // Assert is used to emit run time error
