@@ -13,4 +13,7 @@ add_library(tdsl ${SOURCE_FILES})
 add_executable(tdsl-test experiments.cpp ${SOURCE_FILES})
 target_link_libraries (tdsl-test ${CMAKE_THREAD_LIBS_INIT})
 
-add_executable(benchmark bench/main.cc bench/timehelper.cc bench/allocator.cc bench/assert.cc ${SOURCE_FILES})
+add_executable(benchmark bench/main.cc bench/transskip.cc
+        bench/common/allocator.cc bench/common/assert.cc bench/common/timehelper.cc
+        bench/common/fraser/gc.c bench/common/fraser/ptst.c bench/common/fraser/stm_fraser.c
+        ${SOURCE_FILES})

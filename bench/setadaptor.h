@@ -2,7 +2,7 @@
 #define SETADAPTOR_H
 
 #include "transskip.h"
-#include "allocator.h"
+#include "common/allocator.h"
 
 enum SetOpType
 {

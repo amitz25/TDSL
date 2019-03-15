@@ -5,7 +5,7 @@
 #include <iomanip>
 #include <cstdio>
 #include "timehelper.h"
-//#include "config.h"
+#include "config.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Time

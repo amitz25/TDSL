@@ -14,8 +14,8 @@
 #include <mutex>
 #include "boost/random.hpp"
 #include <sched.h>
-#include "timehelper.h"
-#include "threadbarrier.h"
+#include "common/timehelper.h"
+#include "common/threadbarrier.h"
 #include "setadaptor.h"
 
 template<typename T>
