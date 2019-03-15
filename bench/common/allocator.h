@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <malloc.h>
 #include <atomic>
-#include <common/assert.h>
+#include <assert.h>
 
 #include <iostream>
 
