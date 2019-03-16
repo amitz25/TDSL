@@ -256,47 +256,36 @@ static inline bool help_ops(SkipList &l, Desc* desc, uint8_t opid)
     SkipListTransaction t;
 
     helpStack.Push(desc);
+    try {
 
-    l.TXBegin(t);
-    while(desc->status == LIVE && ret && opid < desc->size)
-    {
-        const Operator& op = desc->ops[opid];
 
-        if(op.type == O_INSERT)
+        l.TXBegin(t);
+        while(desc->status == LIVE && ret && opid < desc->size)
         {
-            node_t* n;
-            ret = l.insert(op.key, t);
-        }
-        else if(op.type == O_DELETE)
-        {
-            node_t* n;
-            ret = l.remove(op.key, t);
-        }
-        else
-        {
-            ret = l.contains(op.key, t);
-        }
+            const Operator& op = desc->ops[opid];
 
-        opid++;
+            if(op.type == O_INSERT)
+            {
+                ret = l.insert(op.key, t);
+            }
+            else if(op.type == O_DELETE)
+            {
+                ret = l.remove(op.key, t);
+            }
+            else
+            {
+                ret = l.contains(op.key, t);
+            }
+
+            opid++;
+        }
+        l.TXCommit(t);
+        __sync_fetch_and_add(&g_count_commit, 1);
     }
-    l.TXCommit(t);
-
+    catch (AbortTransactionException e){
+        __sync_fetch_and_add(&g_count_abort, 1);
+    }
     helpStack.Pop();
-
-    if(ret)
-    {
-        if(__sync_bool_compare_and_swap(&desc->status, LIVE, COMMITTED))
-        {
-            __sync_fetch_and_add(&g_count_commit, 1);
-        }
-    }
-    else
-    {
-        if(__sync_bool_compare_and_swap(&desc->status, LIVE, ABORTED))
-        {
-            __sync_fetch_and_add(&g_count_abort, 1);
-        }
-    }
 
     return ret;
 }
