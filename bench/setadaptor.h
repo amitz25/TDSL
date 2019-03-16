@@ -6,9 +6,9 @@
 
 enum SetOpType
 {
-    FIND = 0,
-    INSERT,
-    DELETE
+    S_FIND = 0,
+    S_INSERT,
+    S_DELETE
 };
 
 struct SetOperator
