@@ -14,12 +14,12 @@ from struct import unpack, calcsize
 NUM_RUNS = 5
 
 
-def get_times(exe_path, output_path, wtype, num_threads):
+def get_times(exe_path, output_path, wtype, num_threads, num_iterations):
     if os.path.exists(output_path):
         os.remove(output_path)
 
     for _ in range(NUM_RUNS):
-        os.system('%s %d %d >> %s' % (exe_path, wtype, num_threads, output_path))
+        os.system('%s 3 %d %d %d >> %s' % (exe_path, num_threads, num_iterations, wtype, output_path))
     lines = open(output_path, 'r').read().splitlines()
     cpu_times = []
     all_times = []
@@ -43,6 +43,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('exe_path', type=str, help='Path to experiments exe')
     parser.add_argument('wtype', type=int, help='Workload type')
+    parser.add_argument('num_iterations', type=int, help='Number of Iterations')
     parser.add_argument('output_path', type=str, help='Results output path')
     args = parser.parse_args()
 
@@ -50,7 +51,7 @@ def main():
 
     dirpath = tempfile.mkdtemp()
 
-    num_threads = [0, 2, 4, 8, 16, 24, 32]
+    num_threads = [1, 2, 4, 8, 16, 24, 32, 64, 128]
     cpu_times = []
     all_times = []
     num_commits = []
@@ -59,12 +60,12 @@ def main():
     try:
         for i in num_threads:
             cpu_time, all_time, num_commit, num_abort = \
-                get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), args.wtype, i)
+                get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), args.wtype, i, args.num_iterations)
             cpu_times.append(cpu_time)
             all_times.append(all_time)
             num_commits.append(num_commit)
             num_aborts.append(num_abort)
-            print("stats: {}\t{}\t{}\t{}".format(i, cpu_time, all_time, num_commit, num_abort))
+            print("stats: {}:\t{}\t{}\t{}\t{}".format(i, cpu_time, all_time, num_commit, num_abort))
     except:
         shutil.rmtree(dirpath)
         raise
