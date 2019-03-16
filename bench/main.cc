@@ -46,7 +46,7 @@ void WorkThread(uint32_t numThread, int threadId, uint32_t testSize, uint32_t tr
         for(uint32_t t = 0; t < tranSize; ++t)
         {
             uint32_t op_dist = randomDistOp(randomGenOp);
-            ops[t].type = op_dist <= insertion ? INSERT : op_dist <= insertion + deletion ? DELETE : FIND;
+            ops[t].type = op_dist <= insertion ? S_INSERT : op_dist <= insertion + deletion ? S_DELETE : S_FIND;
             ops[t].key  = randomDistKey(randomGenKey);
         }
 
@@ -76,7 +76,7 @@ void Tester(uint32_t numThread, uint32_t testSize, uint32_t tranSize, uint32_t k
     // TODO: don't count the aborts caused in the prefill? the prefill is already untimed
     for(unsigned int i = 0; i < keyRange; ++i)
     {
-        ops[0].type = INSERT;
+        ops[0].type = S_INSERT;
         ops[0].key  = randomDist(randomGen);
         set.ExecuteOps(ops);
 
