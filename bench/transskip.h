@@ -5,6 +5,7 @@
 #include <cstdint>
 #include "common/assert.h"
 #include "common/allocator.h"
+#include "../tskiplist/TSkipList.h"
 
 typedef unsigned long setkey_t;
 typedef void         *setval_t;
@@ -129,7 +130,7 @@ void init_transskip_subsystem(void);
 void destroy_transskip_subsystem(void);
 
 
-bool execute_ops(trans_skip* l, Desc* desc);
+bool execute_ops(SkipList &l, Desc* desc);
 
 /*
  * Allocate an empty set.
