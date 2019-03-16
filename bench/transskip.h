@@ -137,7 +137,7 @@ bool execute_ops(SkipList &l, Desc* desc);
  */
 trans_skip *transskip_alloc(Allocator<Desc>* _descAllocator, Allocator<NodeDesc>* _nodeDescAllocator);
 
-void  transskip_free(trans_skip* l);
+void  transskip_free(SkipList &l);
 
 void ResetMetrics(SkipList &l);
 

@@ -40,7 +40,7 @@ public:
 
     ~SetAdaptor()
     {
-        //transskip_free(m_skiplist);
+        transskip_free(m_skiplist);
     }
 
     void Init()

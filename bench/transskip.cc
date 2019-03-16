@@ -311,7 +311,7 @@ void transskip_print(trans_skip* l)
     }
 }
 
-void transskip_free(trans_skip* l)
+void transskip_free(SkipList &l)
 {
     printf("Total commit %u, abort (total/fake) %u/%u\n", g_count_commit, g_count_abort, g_count_fake_abort);
 
