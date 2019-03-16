@@ -57,8 +57,7 @@ void WorkThread(uint32_t numThread, int threadId, uint32_t testSize, uint32_t tr
 }
 
 
-template<typename T>
-void Tester(uint32_t numThread, uint32_t testSize, uint32_t tranSize, uint32_t keyRange, uint32_t insertion, uint32_t deletion,  SetAdaptor<T>& set)
+void Tester(uint32_t numThread, uint32_t testSize, uint32_t tranSize, uint32_t keyRange, uint32_t insertion, uint32_t deletion,  SetAdaptor& set)
 {
     std::vector<std::thread> thread(numThread);
     ThreadBarrier barrier(numThread + 1);
@@ -91,7 +90,7 @@ void Tester(uint32_t numThread, uint32_t testSize, uint32_t tranSize, uint32_t k
     //Create joinable threads
     for (unsigned i = 0; i < numThread; i++) 
     {
-        thread[i] = std::thread(WorkThread<SetAdaptor<T> >, numThread, i + 1, testSize, tranSize, keyRange, insertion, deletion, std::ref(barrier), std::ref(set));
+        thread[i] = std::thread(WorkThread<SetAdaptor>, numThread, i + 1, testSize, tranSize, keyRange, insertion, deletion, std::ref(barrier), std::ref(set));
     }
 
     barrier.Wait();
@@ -153,7 +152,7 @@ int main(int argc, const char *argv[])
     switch(setType)
     {
     case 3:
-        { SetAdaptor<trans_skip> set(numNodes, numThread + 1, tranSize); Tester(numThread, testSize, tranSize, keyRange, insertion, deletion, set); }
+        { SetAdaptor set(numNodes, numThread + 1, tranSize); Tester(numThread, testSize, tranSize, keyRange, insertion, deletion, set); }
     break;
     default:
         break;

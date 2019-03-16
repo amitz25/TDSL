@@ -329,7 +329,7 @@ void transskip_free(trans_skip* l)
     //transskip_print(l);
 }
 
-void ResetMetrics(trans_skip* l)
+void ResetMetrics(SkipList &l)
 {
     g_count_commit = 0;
     g_count_abort = 0;

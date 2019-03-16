@@ -26,26 +26,21 @@ enum SetOpStatus
 
 typedef std::vector<SetOperator> SetOpArray;
 
-template<typename T>
-class SetAdaptor
-{
-};
 
-template<>
-class SetAdaptor<trans_skip>
+class SetAdaptor
 {
 public:
     SetAdaptor(uint64_t cap, uint64_t threadCount, uint32_t transSize)
         : m_descAllocator(cap * threadCount * Desc::SizeOf(transSize), threadCount, Desc::SizeOf(transSize))
         , m_nodeDescAllocator(cap * threadCount *  sizeof(NodeDesc) * transSize, threadCount, sizeof(NodeDesc))
-    { 
-        m_skiplist = transskip_alloc(&m_descAllocator, &m_nodeDescAllocator);
+        , m_skiplist()
+    {
         init_transskip_subsystem(); 
     }
 
     ~SetAdaptor()
     {
-        transskip_free(m_skiplist);
+        //transskip_free(m_skiplist);
     }
 
     void Init()
@@ -79,7 +74,7 @@ public:
 private:
     Allocator<Desc> m_descAllocator;
     Allocator<NodeDesc> m_nodeDescAllocator;
-    trans_skip* m_skiplist;
+    SkipList m_skiplist;
 };
 
 #endif /* end of include guard: SETADAPTOR_H */
