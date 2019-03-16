@@ -21,17 +21,22 @@ def get_times(exe_path, output_path, wtype, num_threads):
     for _ in range(NUM_RUNS):
         os.system('%s %d %d >> %s' % (exe_path, wtype, num_threads, output_path))
     lines = open(output_path, 'r').read().splitlines()
-
-    num_ops = []
+    cpu_times = []
+    all_times = []
+    num_commits = []
     num_aborts = []
 
     for line in lines:
-        if line.startswith('Num ops:'):
-            num_ops.append(int(line[len('Num ops:') + 1:]))
-        elif line.startswith("Num aborts:"):
-            num_aborts.append(int(line[len('Num aborts:') + 1:]))
+        if line.startswith('CPU Time: '):
+            cpu_times.append(float(line[len('CPU Time: '):]))
+        elif line.startswith('Wall Time: '):
+            all_times.append(float(line[len('Wall Time: '):]))
+        if line.startswith('Total commits: '):
+            num_commits.append(int(line[len('Total commits: '):]))
+        elif line.startswith("Total aborts: "):
+            num_aborts.append(int(line[len('Total aborts: '):]))
 
-    return np.array(num_ops).mean(), np.array(num_aborts).mean()
+    return np.array(cpu_times).mean(), np.array(all_times).mean(), np.array(num_commits).mean(), np.array(num_aborts).mean()
 
 
 def main():
@@ -46,22 +51,27 @@ def main():
     dirpath = tempfile.mkdtemp()
 
     num_threads = [0, 2, 4, 8, 16, 24, 32]
-    ops = []
-    aborts = []
+    cpu_times = []
+    all_times = []
+    num_commits = []
+    num_aborts = []
 
     try:
         for i in num_threads:
-            num_ops, num_aborts = get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), args.wtype, i)
-            ops.append(num_ops)
-            aborts.append(num_aborts)
-            print("Num Threads: {} Num ops: {} Num aborts: {}".format(i, num_ops, num_aborts))
+            cpu_time, all_time, num_commit, num_abort = \
+                get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), args.wtype, i)
+            cpu_times.append(cpu_time)
+            all_times.append(all_time)
+            num_commits.append(num_commit)
+            num_aborts.append(num_abort)
+            print("stats: {}\t{}\t{}\t{}".format(i, cpu_time, all_time, num_commit, num_abort))
     except:
         shutil.rmtree(dirpath)
         raise
 
     shutil.rmtree(dirpath)
 
-    joblib.dump((num_threads, ops, aborts), args.output_path)
+    joblib.dump((num_threads, cpu_times, all_times, num_commits, num_aborts), args.output_path)
 
 
 if __name__ == "__main__":

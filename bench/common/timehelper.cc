@@ -77,7 +77,7 @@ std::string Time::ToSecond(double time)
 
     std::stringstream timeStream;
 
-    timeStream << std::setprecision(5) << seconds << 's';
+    timeStream << std::setprecision(5) << seconds;
 
     return timeStream.str();
 }
@@ -132,7 +132,7 @@ double Timer::ElapsedWall() const
 std::string Timer::ToString() const
 {
     std::stringstream timerStream;
-    timerStream << "CPU Time: " << Time::ToString(ElapsedCpu()) << " Wall Time: " << Time::ToString(ElapsedWall());
+    timerStream << "CPU Time: " << Time::ToString(ElapsedCpu()) << "\nWall Time: " << Time::ToString(ElapsedWall());
 
     return timerStream.str();
 }
@@ -140,7 +140,7 @@ std::string Timer::ToString() const
 std::string Timer::ToSecond() const
 {
     std::stringstream timerStream;
-    timerStream << "CPU Time: " << Time::ToSecond(ElapsedCpu()) << " Wall Time: " << Time::ToSecond(ElapsedWall());
+    timerStream << "CPU Time: " << Time::ToSecond(ElapsedCpu()) << "\nWall Time: " << Time::ToSecond(ElapsedWall());
 
     return timerStream.str();
 }

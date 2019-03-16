@@ -34,3 +34,5 @@ windows/Index/x64/Release/Index\.tlog/
 
 cmake-build-debug/
 build/
+
+venv/
