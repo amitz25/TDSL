@@ -63,7 +63,7 @@ def main():
     try:
         for i in num_threads:
             cpu_time, all_time, num_commit, num_abort = \
-                get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), args.wtype, i, args.num_iterations)
+                get_times(args.exe_path, os.path.join(dirpath, str(i) + '.txt'), i, args)
             cpu_times.append(cpu_time)
             all_times.append(all_time)
             num_commits.append(num_commit)
