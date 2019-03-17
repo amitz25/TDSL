@@ -29,11 +29,10 @@ def get_times(exe_path, output_path, wtype, num_threads, num_iterations):
     for line in lines:
         if line.startswith('CPU Time: '):
             cpu_times.append(float(line[len('CPU Time: '):line.index('s', len('CPU Time: '))]))
-            all_times.append(float(line[line.index('s', len('CPU Time: ')):-1]))
-        if line.startswith('Total commits: '):
-            num_commits.append(int(line[len('Total commits: '):]))
-        elif line.startswith("Total aborts: "):
-            num_aborts.append(int(line[len('Total aborts: '):]))
+            all_times.append(float(line[line.index('s', len('CPU Time: '))+len(" Wall Time: "):-1]))
+        if line.startswith('Total commit '):
+            num_commits.append(int(line[len('Total commit '):line.index(',', len('Total commit '))]))
+            num_aborts.append(int(line[line.index(',', len('Total commit '))+len(' abort (total/fake) '):line.index('/', line.index(',', len('Total commit '))+len(' abort (total/fake) '))]))
 
     return np.array(cpu_times).mean(), np.array(all_times).mean(), np.array(num_commits).mean(), np.array(num_aborts).mean()
 
